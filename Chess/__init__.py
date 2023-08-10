@@ -16,7 +16,7 @@ start_positions = { 'WR': ["A1", "H1"],  # White Rooks
 board = []
 index_x = 1
 index_y = 0
-squares = None
+squares = {}
 
 def get_list_squares_board():
     """
@@ -28,7 +28,6 @@ def get_squares_coordinates():
     """
 
     """
-    squares = {}
     letters = get_list_squares_board()
     
     for x in letters:
