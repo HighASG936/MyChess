@@ -1,16 +1,15 @@
 
+
 from Chess import new_board, get_list_squares_board, squares
 from Chess import board, remove_piece, put_piece
 from Chess import is_valid_piece, Emptysquare
-from Chess import Gui
-
-import sys
+from Chess.gui import Gui
 
 class Chess:
     
     def __init__(self):
         new_board()
-        self.gui_board = Gui()
+        self.gui = Gui()
     
     def draw_board(self):
         rows = [str(board[x]) + '\n' for x in range(0, len(board))]

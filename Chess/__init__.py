@@ -1,5 +1,5 @@
-import pygame
-import sys
+
+from Chess.gui import Gui
 
 start_positions = { 'WR': ["A1", "H1"],  # White Rooks
                     'BR': ["A8", "H8"],  # Black Rooks
@@ -20,15 +20,10 @@ index_x = 0
 index_y = 1
 squares = {}
 
-# board settings
-tile_size = 80
-board_size = tile_size * 8
-background_color = (255, 255, 255)
-tile_colors = [(240, 240, 240), (120, 120, 120)]
-
 class Emptysquare(Exception):
     def __init__(self, message):
         self.message = message
+        self.gui = Gui()
 
 
 def get_list_squares_board():
@@ -92,34 +87,3 @@ def is_valid_piece(piece_name):
 
 
 
-class Gui:
-    def __init__(self):
-        #super().__init__()
-        self.running = True
-        pygame.init()
-        self.screen = pygame.display.set_mode((board_size, board_size))
-        pygame.display.set_caption("Chess")
-
-    def update_game(self):
-        """_summary_
-        """
-        for y in range(8):
-            for x in range(8):
-                tile_color = tile_colors[(x + y) % 2]
-                pygame.draw.rect(self.screen, tile_color, pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size))
-        pygame.display.flip()
-
-    def game_events(self): 
-        """_summary_
-        """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-                pygame.quit()
-                sys.exit()
-    
-    def run_gui(self):
-        while self.running:
-            self.game_events()
-            self.update_game()    
-    

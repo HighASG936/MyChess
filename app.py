@@ -20,5 +20,5 @@ def play_game(ch):
 if __name__ == '__main__':
     
     ch = Chess()
-    ch.gui_board.run_gui()
+    ch.gui.run_gui()
     #play_game(ch)
