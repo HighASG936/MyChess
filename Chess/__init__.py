@@ -1,3 +1,5 @@
+import pygame
+import sys
 
 start_positions = { 'WR': ["A1", "H1"],  # White Rooks
                     'BR': ["A8", "H8"],  # Black Rooks
@@ -14,9 +16,20 @@ start_positions = { 'WR': ["A1", "H1"],  # White Rooks
                 }
 
 board = []
-index_x = 1
-index_y = 0
+index_x = 0
+index_y = 1
 squares = {}
+
+# board settings
+tile_size = 80
+board_size = tile_size * 8
+background_color = (255, 255, 255)
+tile_colors = [(240, 240, 240), (120, 120, 120)]
+
+class Emptysquare(Exception):
+    def __init__(self, message):
+        self.message = message
+
 
 def get_list_squares_board():
     """
@@ -30,10 +43,10 @@ def get_squares_coordinates():
     """
     letters = get_list_squares_board()
     
-    for x in letters:
-        for y in range(1, len(board) +1):
-            key = f"{x}{y}"
-            squares[key] = [letters.index(x) +1, y -1]        
+    for row in letters:
+        for col in range(1, len(board) +1):
+            key = f"{row}{col}"
+            squares[key] = [col -1, letters.index(row) +1]        
     return squares
 
 def put_piece(piece, coord):
@@ -45,19 +58,68 @@ def put_piece(piece, coord):
     """
     x, y = coord[index_x], coord[index_y] -1
     board[x][y] = piece
-        
+
+def remove_piece(coord):
+    """_summary_
+
+    Args:
+        coord (_type_): _description_
+    """
+    put_piece('--', coord)
+    
 def new_board():        
     """_summary_
     """    
-    squares = get_squares_coordinates()    
+    
     #Create matriz to chess board
     for row in range(0, 8):
         board.append([])
         for _ in range(0,8):
-            board[row].append('--')    
+            board[row].append('--')  
+    
+    squares = get_squares_coordinates()  
     
     #Put the set chess on board
     for key, value in start_positions.items():
         for pos in value:
             put_piece(str(key), squares[pos])
-    return board
+
+
+def is_valid_piece(piece_name):
+    if piece_name == '--':
+        raise Emptysquare("is empty")
+
+
+
+
+class Gui:
+    def __init__(self):
+        #super().__init__()
+        self.running = True
+        pygame.init()
+        self.screen = pygame.display.set_mode((board_size, board_size))
+        pygame.display.set_caption("Chess")
+
+    def update_game(self):
+        """_summary_
+        """
+        for y in range(8):
+            for x in range(8):
+                tile_color = tile_colors[(x + y) % 2]
+                pygame.draw.rect(self.screen, tile_color, pygame.Rect(x * tile_size, y * tile_size, tile_size, tile_size))
+        pygame.display.flip()
+
+    def game_events(self): 
+        """_summary_
+        """
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+                pygame.quit()
+                sys.exit()
+    
+    def run_gui(self):
+        while self.running:
+            self.game_events()
+            self.update_game()    
+    
