@@ -1,5 +1,5 @@
 
-from Chess.Chess import Chess        
+from Chess.old_Chess import Chess        
 from time import sleep
 import os
 

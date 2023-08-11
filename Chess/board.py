@@ -1,8 +1,7 @@
 import pygame
-import sys
-from Chess.settings import Settings
+from settings import Settings
 
-class Gui:
+class Board:
     def __init__(self):
         self.st = Settings()
         self.running = True
@@ -10,7 +9,7 @@ class Gui:
         self.screen = pygame.display.set_mode((self.st.board_size, self.st.board_size))
         pygame.display.set_caption("Chess")
 
-    def update_game(self):
+    def draw_board(self):
         """_summary_
         """
         for i in range(8):
@@ -21,19 +20,4 @@ class Gui:
                                          self.st.tile_size, 
                                          self.st.tile_size)
                 pygame.draw.rect(self.screen, tile_color, Board_Rect)
-        pygame.display.flip()
-
-    def game_events(self): 
-        """_summary_
-        """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-                pygame.quit()
-                sys.exit()
-    
-    def run_gui(self):
-        while self.running:
-            self.game_events()
-            self.update_game()    
-    
+        
