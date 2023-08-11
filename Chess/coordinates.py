@@ -9,8 +9,8 @@ class Coordinates:
         self.squares = {}
         self.start_positions = {'WR': ["A1", "H1"],  # White Rooks
                                 'BR': ["A8", "H8"],  # Black Rooks
-                                'WH': ["B1", "G1"],  # White Knights
-                                'BH': ["B8", "G8"],  # Black Knights
+                                'WN': ["B1", "G1"],  # White Knights
+                                'BN': ["B8", "G8"],  # Black Knights
                                 'WB': ["C1", "F1"],  # White Bishops
                                 'BB': ["C8", "F8"],  # Black Bishops
                                 'WQ': ["D1"],        # White Queen

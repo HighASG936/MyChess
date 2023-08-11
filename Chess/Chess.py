@@ -34,8 +34,8 @@ class ChessGame:
     def _update_screen(self):        
         self.screen.fill(self.settings.bg_color)
         self.board.draw_board()
-        
-        self.chess_set.draw_piece('WB', 2, 2)
+        self.chess_set.update_board()
+        #self.chess_set.draw_piece('BN', 2, 3)
         
         # Draw a row of black pieces.
         #for index, piece in enumerate(self.chess_set.pieces[:6]):

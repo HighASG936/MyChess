@@ -31,7 +31,7 @@ class ChessSet:
 
         # Create a Piece for each image.
         colors = ['B', 'W']
-        names = ['K', 'Q', 'R', 'B', 'K', 'P']
+        names = ['K', 'Q', 'R', 'B', 'N', 'P']
 
         piece_num = 0
         for color in colors:
@@ -43,12 +43,20 @@ class ChessSet:
 
                 piece_num += 1
 
-    def draw_piece(self, key, x, y):
+    def _draw_piece(self, key, x, y):
             for piece in self.pieces:
                 if key == piece.key:                    
                     piece.x = self.chess_game.settings.tile_size * x
                     piece.y = self.chess_game.settings.tile_size * y
                     piece.blitme()
+
+    def update_board(self):
+        board = self.chess_game.locations
+        
+        for i in range(len(board)):
+            for j in range(len(board)):
+                key=board[i][j]
+                self._draw_piece(key, j, i)
 
 class Piece:
     """Represents a chess piece."""
