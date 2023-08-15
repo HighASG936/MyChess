@@ -1,6 +1,4 @@
 
-import pygame
-
 
 
 class Emptysquare(Exception):
@@ -26,9 +24,9 @@ class Emptysquare(Exception):
 #             _put_piece(str(key), squares[pos])
 
 
-def is_valid_piece(piece_name):
-    if piece_name == '--':
-        raise Emptysquare("is empty")
+# def is_valid_piece(piece_name):
+#     if piece_name == '--':
+#         raise Emptysquare("is empty")
 
 
 

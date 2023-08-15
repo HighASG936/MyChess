@@ -1,22 +1,12 @@
-# This class handles sprite sheets
-# This was taken from www.scriptefun.com/transcript-2-using
-# sprite-sheets-and-drawing-the-background
-# I've added some code to fail if the file wasn't found..
-# Note: When calling images_at the rect is the format:
-# (x, y, x + offset, y + offset)
-
-# Additional notes
-# - Further adaptations from https://www.pygame.org/wiki/Spritesheet
-# - Cleaned up overall formatting.
-# - Updated from Python 2 -> Python 3.
 
 import pygame
 from utils import transparency_color
 
-class SpriteSheet:
+class Sprites:
 
     def __init__(self, filename):
         """Load the sheet."""
+        self.transparency_color = (255, 255, 255)
         try:
             self.sheet = pygame.image.load(filename).convert()
         except FileNotFoundError as fn:
@@ -76,7 +66,7 @@ class SpriteSheet:
                 sprite_rect = (x, y, x_sprite_size, y_sprite_size)
                 sprite_rects.append(sprite_rect)
 
-        grid_images = self.images_at(sprite_rects, transparency_color)
+        grid_images = self.images_at(sprite_rects, self.transparency_color)
         print(f"Loaded {len(grid_images)} grid images.")
 
         return grid_images

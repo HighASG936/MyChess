@@ -29,25 +29,19 @@ class ChessGame:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
-                    sys.exit()
+                    sys.exit()                        
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                for sprite in self.chess_set.Pieces_Group:
+                    if sprite.rect.collidepoint(event.pos):
+                        sprite.dragging = True
+            elif event.type == pygame.MOUSEBUTTONUP:
+                for sprite in self.chess_set.Pieces_Group:
+                    sprite.dragging = False            
 
     def _update_screen(self):        
         self.screen.fill(self.settings.bg_color)
         self.board.draw_board()
         self.chess_set.update_board()
-        #self.chess_set.draw_piece('BN', 2, 3)
-        
-        # Draw a row of black pieces.
-        #for index, piece in enumerate(self.chess_set.pieces[:6]):
-        #    piece.x = index * 100
-        #    piece.blitme()
-
-        # Draw a row of white pieces.
-        #for index, piece in enumerate(self.chess_set.pieces[6:]):
-        #    piece.x = index * 100
-        #    piece.y = 100
-        #    piece.blitme()
-
         pygame.display.flip()
 
     def run_game(self):

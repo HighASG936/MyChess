@@ -1,17 +1,25 @@
 """Module to represent a chess set, and individual pieces."""
 
-from utils.spritesheet import SpriteSheet
+from utils.sprites import Sprites
+import pygame
 
 class ChessSet:
-    """Represents a set of chess pieces.
+    """
+    Represents a set of chess pieces.
     Each piece is an object of the Piece class.
     """
 
     def __init__(self, chess_game):
         """Initialize attributes to represent the overall set of pieces."""
+        super().__init__()
         self.chess_game = chess_game
         self.pieces = []
         self._load_pieces()
+        self.Pieces_Group = pygame.sprite.Group()
+        
+        filename = 'Chess/images/chess_pieces.bmp'         
+        self.Sprites_pieces = Sprites(filename)
+        
 
     def _load_pieces(self):
         """Builds the overall set:
@@ -20,14 +28,11 @@ class ChessSet:
           for that piece.
         - Adds each piece to the list self.pieces.
         """
-        
-        filename = 'Chess/images/chess_pieces.bmp' 
-                
-        piece_ss = SpriteSheet(filename)
-
         # Load all piece images.
-        piece_images = piece_ss.load_grid_images(2, 6, x_margin=64,
-                x_padding=72, y_margin=68, y_padding=48)
+        piece_images = self.Sprites_pieces.load_grid_images(2, 6, x_margin=64,
+                                                                  x_padding=72, 
+                                                                  y_margin=68, 
+                                                                  y_padding=48)
 
         # Create a Piece for each image.
         colors = ['B', 'W']
@@ -40,7 +45,7 @@ class ChessSet:
                 piece.key = f"{color}{name}"
                 piece.image = piece_images[piece_num]
                 self.pieces.append(piece)
-
+                self.Pieces_Group.add(self.Sprites_pieces)
                 piece_num += 1
 
     def _draw_piece(self, key, x, y):
@@ -77,6 +82,9 @@ class Piece:
     def blitme(self):
         """Draw the piece at its current location."""
         self.rect = self.image.get_rect()
-        self.rect.topleft = self.x, self.y  #Coordenates of piece
+        if self.dragging:
+            self.rect.center = pygame.mouse.get_pos()
+        else:
+            self.rect.topleft = self.x, self.y  #Coordenates of piece        
         self.screen.blit(self.image, self.rect)
         
