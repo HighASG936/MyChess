@@ -39,31 +39,44 @@ class ChessSet:
         # Create a Piece for each image.
         colors = ['B', 'W']
         names = ['K', 'Q', 'R', 'B', 'N', 'P']
-        piece_num = 0
+        i = 0
+        j = 0 
+        image_piece_index = 0
         for color in colors:
             for name in names:
-                image = piece_images[piece_num]                
-                piece = Piece(self.chess_game, image, name, color)
-                piece.key = f"{color}{name}"                
-                self.pieces.append(piece)                                
-                self.update_board()
-                self.Pieces_Group.add_internal(piece)
-                piece_num += 1
+                image = piece_images[image_piece_index]                                
+                board = self.chess_game.locations
+                current_piece = f"{color}{name}"                
+                for i in range(len(board)):
+                    for j in range(len(board)):
+                        tile = board[i][j]
+                        if tile == current_piece:
+                            print(tile, i, j)
+                            piece = Piece(self.chess_game, image, name, color)
+                            piece.x = self.chess_game.settings.tile_size * j
+                            piece.y = self.chess_game.settings.tile_size * i
+                            piece.name = current_piece
+                            #self.pieces.append(piece)                                                            
+                            #self._draw_piece(piece.name, piece.x, piece.y)                                
+                            self.Pieces_Group.add_internal(piece)
+                            piece.blitme()
+                image_piece_index += 1
 
-    def _draw_piece(self, key, x, y):
-            for piece in self.pieces:
-                if key == piece.key:                    
-                    piece.x = self.chess_game.settings.tile_size * x
-                    piece.y = self.chess_game.settings.tile_size * y
-                    piece.blitme()
+    # def _draw_piece(self, key, x, y):
+    #         for piece in self.pieces:
+    #             if key == piece.key:                    
+    #                 piece.x = self.chess_game.settings.tile_size * x
+    #                 piece.y = self.chess_game.settings.tile_size * y
+    #                 piece.blitme()
 
     def update_board(self):
-        board = self.chess_game.locations
+        pass
+        # board = self.chess_game.locations
         
-        for i in range(len(board)):
-            for j in range(len(board)):
-                key=board[i][j]
-                self._draw_piece(key, j, i)
+        # for i in range(len(board)):
+        #     for j in range(len(board)):
+        #         key=board[i][j]
+        #         self._draw_piece(key, j, i)
 
 class Piece:
     """Represents a chess piece."""
