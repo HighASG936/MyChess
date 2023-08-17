@@ -49,10 +49,7 @@ class ChessGame:
                         for center in centers
                     ]
         min_distance_index = distances.index(min(distances))
-        new_pos = centers[min_distance_index]
-        print(min_distance_index,current_position, new_pos)
-        sleep(0.4)
-        os.system('clear')        
+        new_pos = centers[min_distance_index]    
         return new_pos
                                 
     def _update_screen(self):        
