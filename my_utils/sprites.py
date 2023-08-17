@@ -15,7 +15,6 @@ class Sprites(pygame.sprite.Sprite):
             print(f"Unable to load spritesheet image: {filename}")
             raise SystemExit(fn)
 
-
     def image_at(self, rectangle, colorkey=None):
         """Load a specific image from a specific rectangle."""
         # Loads image from x, y, x+offset, y+offset.
@@ -69,8 +68,6 @@ class Sprites(pygame.sprite.Sprite):
                 sprite_rects.append(sprite_rect)
 
         grid_images = self.images_at(sprite_rects, self.transparency_color)
-        print(f"Loaded {len(grid_images)} grid images.")
-
         return grid_images
     
     

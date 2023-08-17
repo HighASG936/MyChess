@@ -1,8 +1,10 @@
 
+from settings import Settings
 
 class Coordinates:
     
     def __init__(self):
+        self.settings = Settings()
         self.board = []
         self.index_x = 0
         self.index_y = 1
@@ -23,13 +25,17 @@ class Coordinates:
         self._fill_board_matrix()
         self._generate_matrix_of_board()
         self._put_pieces_on_board()
+
+    def get_snap_coordinates(self):
+        n = self.settings.board_n
+        size = self.settings.board_size
+        tile_centers = [((i*size)/2, (j*size)/2 ) for i in range(1, n+1) for j in range(1, n+1) ]        
+        return tile_centers                                    
         
     def _fill_board_matrix(self):
-        #Create matriz to chess board
-        for row in range(0, 8):
-            self.board.append([])
-            for _ in range(0,8):
-                self.board[row].append('')  
+        n = self.settings.board_n
+        self.board = [ ['' for _ in range(n)] for _ in range(n)]
+
     
     def _get_list_literals_columns(self):
         """
@@ -63,39 +69,14 @@ class Coordinates:
         Args:
             coord (_type_): _description_
         """
-        self._put_piece('--', coord)
+        self._put_piece('', coord)
 
-    def _put_pieces_on_board(self):
-        #Put the set chess on board
+    def _put_pieces_on_board(self):        
         for key, value in self.start_positions.items():
             for pos in value:
                 self._put_piece(str(key), self.squares[pos])    
         
-    # def move_piece(self, move_tuple):
-    #     """_summary_
-
-    #     Args:
-    #         move_tuple (_type_): _description_
-    #     """
-    #     origin, destiny = move_tuple
-    #     ori_coords = squares[origin]
-    #     ori_x, ori_y = ori_coords
-               
-    #     try:
-    #         origin_piece_name = board[ori_x][ori_y]
-    #         is_valid_piece(origin_piece_name)
-    #     except Emptysquare as es:
-    #         print(f"Location {origin}:[{ori_x},{ori_y}] {es.message}")            
-    #     else:
-    #         dest_coords = squares[destiny]
-    #         remove_piece(ori_coords)
-    #         put_piece(origin_piece_name, dest_coords)
-
-
     def get_board(self):
-        """
-
-        """
         return self.board
 
 
