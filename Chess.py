@@ -4,11 +4,9 @@ from settings import Settings
 from chess_set import ChessSet
 from board import Board
 from coordinates import Coordinates
-import sys
+from sys import exit
+from math import sqrt
 import pygame
-import math
-import os
-from time import sleep
 
 class ChessGame:
     """Overall class to manage game assets and behavior."""
@@ -17,10 +15,10 @@ class ChessGame:
         """Initialize the game, and create resources."""
         self.coords = Coordinates()
         self.locations = self.coords.get_board()
-        self.tiles_centers = self.coords.get_snap_coordinates()
+        self.tiles_centers = self.coords.tiles_centers        
         pygame.init()
         self.settings = Settings()
-        self.board = Board()
+        self.board = Board(self)
         self.screen = pygame.display.set_mode((self.settings.board_size, self.settings.board_size))
         pygame.display.set_caption("Chess")
 
@@ -34,10 +32,10 @@ class ChessGame:
     def _check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                sys.exit()
+                exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
-                    sys.exit()                        
+                    exit()                        
             elif event.type == pygame.MOUSEBUTTONDOWN:                   
                 self._dragging_piece(event)
 
@@ -45,19 +43,19 @@ class ChessGame:
         current_position = pygame.mouse.get_pos()
         centers = self.tiles_centers
         distances = [
-                        math.sqrt( (center[0] - current_position[0])**2  +  (center[1] - current_position[1])**2 )
+                        sqrt( (center[0] - current_position[0])**2  +  (center[1] - current_position[1])**2 )
                         for center in centers
                     ]
         min_distance_index = distances.index(min(distances))
         new_pos = centers[min_distance_index]    
         return new_pos
                                 
-    def _update_screen(self):        
+    def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
         self.board.draw_board()                
         
         for sprite in self.chess_set.Pieces_Group:  
-            if sprite.dragging:                
+            if sprite.dragging:         
                 sprite.rect.center = self._snap_piece()
         
         self.chess_set.Pieces_Group.draw(self.screen)

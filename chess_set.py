@@ -17,7 +17,7 @@ class ChessSet:
         self.Pieces_Group = pygame.sprite.Group()
         self.filename = os.path.join(os.path.dirname(__file__), 'images', 'chess_pieces.bmp')    
         self.Sprites_pieces = Sprites(self.filename)
-        self._load_pieces()
+        self._load_pieces()        
         
 
     def _load_pieces(self):
