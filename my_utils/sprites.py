@@ -1,12 +1,14 @@
 
 import pygame
-from utils import transparency_color
 
-class Sprites:
+
+class Sprites(pygame.sprite.Sprite):
 
     def __init__(self, filename):
+        super().__init__()
         """Load the sheet."""
         self.transparency_color = (255, 255, 255)
+        self.rect = None
         try:
             self.sheet = pygame.image.load(filename).convert()
         except FileNotFoundError as fn:
@@ -14,19 +16,19 @@ class Sprites:
             raise SystemExit(fn)
 
 
-    def image_at(self, rectangle, colorkey = None):
+    def image_at(self, rectangle, colorkey=None):
         """Load a specific image from a specific rectangle."""
         # Loads image from x, y, x+offset, y+offset.
-        rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size).convert()
-        image.blit(self.sheet, (0, 0), rect)
+        self.rect = pygame.Rect(rectangle)
+        image = pygame.Surface(self.rect.size).convert()
+        image.blit(self.sheet, (0, 0), self.rect)
         if colorkey is not None:
             if colorkey == -1:
                 colorkey = image.get_at((0,0))
             image.set_colorkey(colorkey, pygame.RLEACCEL)
         return image
 
-    def images_at(self, rects, colorkey = None):
+    def images_at(self, rects, colorkey=None):
         """Load a whole bunch of images and return them as a list."""
         return [self.image_at(rect, colorkey) for rect in rects]
 

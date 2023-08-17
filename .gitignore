@@ -1,4 +1,6 @@
-Chess/__pycache__/
 __pycache__/
+__pycache__/*
 *.sh
-.ssh
+*.ssh
+*.swp
+
