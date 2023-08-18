@@ -14,27 +14,20 @@ class Movements:
         king = [ [offset(i), offset(j)] 
                     for i in range(-1, 2) 
                     for j in range(-1, 2)                      
-                    ]   
+                    ]       
         
-        queen = [   [offset(i), offset(j)] 
-                    for i in range(-4, 4) 
-                    for j in range(-4, 4) 
-                    ]    
-        
-        rook = [[offset(i), 0] for i in range(-4, 4)] + \
-               [[0, offset(j)] for j in range(-4, 4) if offset(j) != 0 ]
-        
-        pawn = [  [0, offset(j)] for j in range(3)] + \
-                [ [offset(i), offset(j)] for i in range(-1, 2, 2) for j in range(1)]
-        
-        bishop = [ [offset(i), offset(i+j)] 
-                    for i in range(-4, 4) 
-                    for j in range(-4, 4)
-                    if i != 0
-                    ]
+        rook = [[offset(i), 0] for i in range(-8, 9)] + \
+               [[0, offset(j)] for j in range(-8, 9) if offset(j) != 0 ]
+                
+        bishop = [ [offset(i), k*offset(i)] for i in range(-8, 9) for k in [-1, 1]]
 
-        knight = [[offset(i), offset(2*i)] for i in range(-2, 3)] + \
-                 [[offset(2*j), offset(j)] for j in range(-2, 3)  if offset(j) != 0] 
+        queen = rook + bishop
+
+        pawn = [[0, offset(j)] for j in range(3)] + \
+               [[offset(i), offset(1)] for i in [-1, 1]]
+
+        knight = [[k*offset(1), l*offset(2)] for k in [-1, 1] for l in [-1, 1] ] + \
+                 [[k*offset(2), l*offset(1)] for k in [-1, 1] for l in [-1, 1] ] 
         
         self.movs = {'K': king, 'Q': queen, 'R': rook, 'P': pawn, 'B': bishop, 'N': knight}
                 
@@ -42,7 +35,9 @@ class Movements:
         a = np.array(locate)
         b = np.array(list_moves)
         list_moves = a + b
-        possible_moves = [tuple(coord) for coord in list_moves if all(x >= 0 for x in coord)]                
+        possible_moves = [tuple(coord) 
+                          for coord in list_moves 
+                          if all(x <= self.settings.board_size for x in coord)]                
         return possible_moves
     
     def draw_markers(self, name, locate):
