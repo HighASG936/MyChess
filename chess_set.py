@@ -36,7 +36,7 @@ class ChessSet:
                                                             y_margin=68, 
                                                             y_padding=48)
 
-        colors = ['B', 'W']
+        colors = ['W', 'B']
         names = ['K', 'Q', 'R', 'B', 'N', 'P']
         i = 0
         j = 0 
@@ -55,26 +55,30 @@ class ChessSet:
                 tile = board[i][j]
                 if tile == current_piece:
                     coord = (self.chess_game.settings.tile_size * j,
-                             self.chess_game.settings.tile_size * i)
-                    piece = Piece(self.chess_game, image, current_piece, color, coord)                                                                                
+                             self.chess_game.settings.tile_size * i)                    
+                    args = [self.chess_game, image, current_piece, color, coord]
+                    
+                    piece = Piece(args)                                                                                
                     self.Pieces_Group.add_internal(piece)
                     piece.blitme()
 
 class Piece:
     """Represents a chess piece."""
 
-    def __init__(self, chess_game, image, name, color, coord):
+    def __init__(self, *args):
         """Initialize attributes to represent a ches piece."""
         super().__init__()
-
-        self.image = image
-        self.name = name
-        self.color = color
+        
+        if len(args) != 5: raise ValueError("Error constructor.\nPlease check entered arguments")
+        
+        self.chess_game, self.image, self.current_piece, self.color, self.coord = args
+        
         self.dragging = False
-        self.screen = chess_game.screen
+        self.screen = self.chess_game.screen
         self.rect = self.image.get_rect()
-        self.x, self.y = coord
+        self.x, self.y = self.coord
         self.direction = self._set_direction()
+        self.possible_movs = []
 
     def _set_direction(self):
         if self.name[1] == 'P' and self.y > 551:
@@ -84,6 +88,6 @@ class Piece:
     def blitme(self):
         """Draw the piece at its current location."""
         self.rect = self.image.get_rect()
-        self.rect.topleft = self.x, self.y  #Coordenates of piece        
+        self.rect.topleft = self.coord  #Coordenates of piece        
         self.screen.blit(self.image, self.rect)
         

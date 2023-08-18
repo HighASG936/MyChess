@@ -9,8 +9,11 @@ class Movements:
         self.settings = Settings()
         self.markers = sprite.Group()
         self.board = chessboard
-        offset = lambda e: int(e * (self.settings.tile_size))
+        self.surface_size = (self.settings.tile_size, self.settings.tile_size)
+        self.marker_color = self.settings.marker_color 
         
+        offset = lambda e: int(e * (self.settings.tile_size))
+
         king = [ [offset(i), offset(j)] 
                     for i in range(-1, 2) 
                     for j in range(-1, 2)                      
@@ -30,7 +33,8 @@ class Movements:
                  [[k*offset(2), l*offset(1)] for k in [-1, 1] for l in [-1, 1] ] 
         
         self.movs = {'K': king, 'Q': queen, 'R': rook, 'P': pawn, 'B': bishop, 'N': knight}
-                
+
+
     def _get_movs(self,list_moves,locate, direction):   
         a = np.array(locate)
         b = np.array(list_moves)
@@ -40,14 +44,17 @@ class Movements:
                           if all(x <= self.settings.board_size for x in coord)]                
         return possible_moves
     
-    def draw_markers(self, sprite, locate):
-        marker_color = self.settings.marker_color
+    def _get_markers(self, sprite, locate):
         name = sprite.name[1]
         direction = sprite.direction
         list_movs = self.movs[name]
-        possible_movs = self._get_movs(list_movs, locate, direction)
-        Marker_Rect = Surface((self.settings.tile_size, self.settings.tile_size), SRCALPHA)
-        
+        return self._get_movs(list_movs, locate, direction)
+    
+    def draw_markers(self, sprite, locate):                  
+        Marker_Surface = Surface(self.surface_size, SRCALPHA)         
+        possible_movs = self._get_markers(sprite, locate)            
         for possible_mov in possible_movs:  
-            Marker_Rect.fill(marker_color)
-            self.board.screen.blit(Marker_Rect, possible_mov)
+            Marker_Surface.fill(self.marker_color)
+            self.board.screen.blit(Marker_Surface, possible_mov)
+
+
