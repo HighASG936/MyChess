@@ -20,14 +20,18 @@ class ChessGame:
         self.settings = Settings()
         self.board = Board(self)
         self.screen = pygame.display.set_mode((self.settings.board_size, self.settings.board_size))
+        self.last_x, self.last_y = 0, 0
         pygame.display.set_caption("Chess")
 
         self.chess_set = ChessSet(self)
 
     def _dragging_piece(self, event):
         for sprite in self.chess_set.Pieces_Group:                                
-            if sprite.rect.collidepoint(event.pos):
-                sprite.dragging = not sprite.dragging        
+            if sprite.rect.collidepoint(event.pos):                
+                sprite.dragging = not sprite.dragging
+                if sprite.dragging:                     
+                    self.last_x, self.last_y = sprite.x, sprite.y
+
     
     def _check_events(self):
         for event in pygame.event.get():
@@ -55,9 +59,10 @@ class ChessGame:
         self.board.draw_board()                
         
         for sprite in self.chess_set.Pieces_Group:  
-            if sprite.dragging:         
+            if sprite.dragging:        
+                self.board.movs.draw_markers(sprite.name, [self.last_x, self.last_y] ) 
                 sprite.rect.center = self._snap_piece()
-        
+                sprite.x, sprite.y = sprite.rect.topleft        
         self.chess_set.Pieces_Group.draw(self.screen)
         pygame.display.flip()
 
