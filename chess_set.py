@@ -57,8 +57,7 @@ class ChessSet:
                     piece = Piece(self.chess_game, image, name, color)
                     piece.x = self.chess_game.settings.tile_size * j
                     piece.y = self.chess_game.settings.tile_size * i
-                    piece.name = current_piece
-                    #self.pieces.append(piece)                                                                                         
+                    piece.name = current_piece                                                                                         
                     self.Pieces_Group.add_internal(piece)
                     piece.blitme()
 

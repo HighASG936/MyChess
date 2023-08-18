@@ -30,8 +30,11 @@ class Coordinates:
     def _get_snap_coordinates(self):
         n = self.settings.board_n
         tile_size = self.settings.tile_size
-        tile_centers = [( (i*tile_size)-tile_size/2, (j*tile_size)-tile_size/2 )
-                        for i in range(1, n+1) for j in range(1, n+1) ]        
+        tile_center = tile_size/2
+        tile_centers = [( (i*tile_size)-tile_center, (j*tile_size)-tile_center )
+                        for i in range(1, n+1) 
+                        for j in range(1, n+1) 
+                       ]        
         return tile_centers                                    
         
     def _fill_board_matrix(self):
