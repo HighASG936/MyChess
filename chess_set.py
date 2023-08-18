@@ -54,17 +54,16 @@ class ChessSet:
             for j in range(len(board)):
                 tile = board[i][j]
                 if tile == current_piece:
-                    piece = Piece(self.chess_game, image, name, color)
-                    piece.x = self.chess_game.settings.tile_size * j
-                    piece.y = self.chess_game.settings.tile_size * i
-                    piece.name = current_piece                                                                                         
+                    coord = (self.chess_game.settings.tile_size * j,
+                             self.chess_game.settings.tile_size * i)
+                    piece = Piece(self.chess_game, image, current_piece, color, coord)                                                                                
                     self.Pieces_Group.add_internal(piece)
                     piece.blitme()
 
 class Piece:
     """Represents a chess piece."""
 
-    def __init__(self, chess_game, image, name, color):
+    def __init__(self, chess_game, image, name, color, coord):
         """Initialize attributes to represent a ches piece."""
         super().__init__()
 
@@ -74,7 +73,13 @@ class Piece:
         self.dragging = False
         self.screen = chess_game.screen
         self.rect = self.image.get_rect()
-        self.x, self.y = 0.0, 0.0
+        self.x, self.y = coord
+        self.direction = self._set_direction()
+
+    def _set_direction(self):
+        if self.name[1] == 'P' and self.y > 551:
+            return -1
+        return 1
 
     def blitme(self):
         """Draw the piece at its current location."""

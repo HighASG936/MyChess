@@ -31,19 +31,21 @@ class Movements:
         
         self.movs = {'K': king, 'Q': queen, 'R': rook, 'P': pawn, 'B': bishop, 'N': knight}
                 
-    def _get_movs(self,list_moves,locate):   
+    def _get_movs(self,list_moves,locate, direction):   
         a = np.array(locate)
         b = np.array(list_moves)
-        list_moves = a + b
+        list_moves = a + (direction*b)
         possible_moves = [tuple(coord) 
                           for coord in list_moves 
                           if all(x <= self.settings.board_size for x in coord)]                
         return possible_moves
     
-    def draw_markers(self, name, locate):
+    def draw_markers(self, sprite, locate):
         marker_color = self.settings.marker_color
-        list_movs = self.movs[name[1]]
-        possible_movs = self._get_movs(list_movs, locate)
+        name = sprite.name[1]
+        direction = sprite.direction
+        list_movs = self.movs[name]
+        possible_movs = self._get_movs(list_movs, locate, direction)
         Marker_Rect = Surface((self.settings.tile_size, self.settings.tile_size), SRCALPHA)
         
         for possible_mov in possible_movs:  

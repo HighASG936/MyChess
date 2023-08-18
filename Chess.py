@@ -30,8 +30,7 @@ class ChessGame:
             if sprite.rect.collidepoint(event.pos):                
                 sprite.dragging = not sprite.dragging
                 if sprite.dragging:                     
-                    self.last_x, self.last_y = sprite.x, sprite.y
-
+                    self.last_x, self.last_y = sprite.x, sprite.y                
     
     def _check_events(self):
         for event in pygame.event.get():
@@ -43,12 +42,12 @@ class ChessGame:
             elif event.type == pygame.MOUSEBUTTONDOWN:                   
                 self._dragging_piece(event)
 
-    def _snap_piece(self):
-        current_position = pygame.mouse.get_pos()
+    def _snap_piece(self, sprite):
+        current_x, current_y = pygame.mouse.get_pos()
         centers = self.tiles_centers
         distances = [
-                        sqrt( (center[0] - current_position[0])**2  +  (center[1] - current_position[1])**2 )
-                        for center in centers
+                        sqrt( (center_x - current_x)**2  +  (center_y - current_y)**2 )
+                        for center_x, center_y in centers
                     ]
         min_distance_index = distances.index(min(distances))
         new_pos = centers[min_distance_index]    
@@ -60,8 +59,8 @@ class ChessGame:
         
         for sprite in self.chess_set.Pieces_Group:  
             if sprite.dragging:        
-                self.board.movs.draw_markers(sprite.name, [self.last_x, self.last_y] ) 
-                sprite.rect.center = self._snap_piece()
+                self.board.movs.draw_markers(sprite, [self.last_x, self.last_y] ) 
+                sprite.rect.center = self._snap_piece(sprite)
                 sprite.x, sprite.y = sprite.rect.topleft        
         self.chess_set.Pieces_Group.draw(self.screen)
         pygame.display.flip()
