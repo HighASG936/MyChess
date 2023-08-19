@@ -30,10 +30,11 @@ class ChessGame:
             if piece.rect.collidepoint(event.pos):                
                 piece.dragging = not piece.dragging
                 if piece.dragging:                     
-                    self.last_x, self.last_y = piece.x, piece.y                
-                    piece.possible_movs = self.board.movs._get_markers(piece)
-                    print(piece.possible_movs)
-                    break                    
+                    
+                    self.last_x, self.last_y = piece.rect.topleft                      
+                    piece.possible_movs = self.board.movs._get_possible_movs(piece, piece.coord)                    
+                    break
+        print(piece.x, piece.y)
     
     def _check_events(self):
         for event in pygame.event.get():
@@ -64,7 +65,8 @@ class ChessGame:
             if piece.dragging:        
                 self.board.movs.draw_markers(piece, [self.last_x, self.last_y] ) 
                 piece.rect.topleft = self._snap_piece(piece)
-                piece.x, piece.y = piece.rect.topleft        
+                piece.x, piece.y = piece.rect.topleft
+                break
         self.chess_set.Pieces_Group.draw(self.screen)
         pygame.display.flip()
 
@@ -72,7 +74,7 @@ class ChessGame:
         """Start the main loop for the game."""
         while True:
             self._check_events()
-            self._update_screen()            
+            self._update_screen()
 
 if __name__ == '__main__':
     chess_game = ChessGame()

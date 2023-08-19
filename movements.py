@@ -29,7 +29,8 @@ class Movements:
         pawn = [[0, offset(j)] for j in range(3)] + \
                [[offset(i), offset(1)] for i in [-1, 1]]
 
-        knight = [[k*offset(1), l*offset(2)] for k in [-1, 1] for l in [-1, 1] ] + \
+        knight = [[0, 0]] + \
+                 [[k*offset(1), l*offset(2)] for k in [-1, 1] for l in [-1, 1] ] + \
                  [[k*offset(2), l*offset(1)] for k in [-1, 1] for l in [-1, 1] ] 
         
         self.movs = {'K': king, 'Q': queen, 'R': rook, 'P': pawn, 'B': bishop, 'N': knight}
@@ -44,19 +45,20 @@ class Movements:
                           if all(x <= self.settings.board_size for x in coord)]                
         return possible_moves
     
-    def _get_possible_movs(self, sprite, locate=None):
+    def _get_possible_movs(self, piece, locate=None):
         
         if locate == None:
-            locate = sprite.coord
-        
-        name = sprite.name[1]
-        direction = sprite.direction
+            locate = piece.coord
+        name = piece.name[1]
+        direction = piece.direction
         list_movs = self.movs[name]
+        print("to movs", piece.x, piece.y)
         return self._get_all_movs(list_movs, locate, direction)
     
-    def draw_markers(self, sprite, locate):                  
+    
+    def draw_markers(self, piece, locate):                  
         Marker_Surface = Surface(self.surface_size, SRCALPHA)         
-        possible_movs = self._get_possible_movs(sprite, locate)            
+        possible_movs = self._get_possible_movs(piece, locate)            
         for possible_mov in possible_movs:  
             Marker_Surface.fill(self.marker_color)
             self.board.screen.blit(Marker_Surface, possible_mov)
