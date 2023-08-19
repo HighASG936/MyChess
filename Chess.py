@@ -24,14 +24,16 @@ class ChessGame:
         pygame.display.set_caption("Chess")
         self.chess_set = ChessSet(self)
         self.distance = lambda x1, x2, y1, y2 : sqrt( (x1 - x2)**2  +  (y1 - y2)**2)
+        self.movements = self.board.movs
+        self.Pieces_group = self.chess_set.Pieces_Group
 
     def _dragging_piece(self, event):
-        for piece in self.chess_set.Pieces_Group:                                
+        for piece in self.Pieces_group:                                
             if piece.rect.collidepoint(event.pos):                
                 piece.dragging = not piece.dragging
                 if piece.dragging:                                         
                     self.last_x, self.last_y = piece.rect.topleft                                        
-                    piece.possible_movs = self.board.movs._get_possible_movs(piece, piece.coord)
+                    piece.possible_movs = self.movements._get_possible_movs(piece, grouppieces=self.Pieces_group)
                     break
                 else:
                     piece.x, piece.y = piece.rect.topleft

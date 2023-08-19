@@ -3,6 +3,7 @@
 from my_utils.sprites import Sprites
 import pygame
 import os
+from settings import Settings
 
 class ChessSet:
     """
@@ -37,8 +38,6 @@ class ChessSet:
                                                             x_padding=72, 
                                                             y_margin=68, 
                                                             y_padding=48)
-        i = 0
-        j = 0 
         image_piece_index = 0
         for color in self.colors:
             for name in self.names:
@@ -70,11 +69,14 @@ class Piece:
         self.screen = self.chess_game.screen
         self.rect = self.image.get_rect()
         self.x, self.y = self.coord
-        self.direction = self._set_direction()
         self.possible_movs = []
 
+        settings = Settings()
+        self.get_y_coord = lambda r: r * settings.tile_size
+        self.direction = self._set_direction()        
+        
     def _set_direction(self):
-        if self.name[1] == 'P' and self.y > 551:
+        if self.name[1] == 'P' and self.y > self.get_y_coord(5):
             return -1
         return 1
 

@@ -6,6 +6,7 @@ from pygame import sprite, Surface, SRCALPHA
 class Movements:
 
     def __init__(self, chessboard):
+        super().__init__()
         self.settings = Settings()
         self.markers = sprite.Group()
         self.board = chessboard
@@ -45,19 +46,30 @@ class Movements:
                           if all(x <= self.settings.board_size for x in coord)]                
         return possible_moves
     
-    def _get_possible_movs(self, piece, locate=None):
-        
+    def _get_possible_movs(self, piece, locate=None, grouppieces=None):                
+
         if locate == None:
             locate = piece.coord
         
         name = piece.name[1]
         direction = piece.direction
         list_movs = self.movs[name]        
-        return self._get_all_movs(list_movs, locate, direction)
+        all_movs = self._get_all_movs(list_movs, locate, direction)
+        possible_moves = all_movs.copy()
+
+        if grouppieces != None:
+            group = sprite.Group()            
+            group.add(grouppieces)
+            group.remove(piece)
+            for piece in group:
+                if piece.coord in all_movs:
+                    possible_moves.remove(piece.coord)
+
+        return possible_moves
         
     def draw_markers(self, piece, locate):                  
         Marker_Surface = Surface(self.surface_size, SRCALPHA)         
-        possible_movs = self._get_possible_movs(piece, locate)            
+        possible_movs = self._get_possible_movs(piece, locate, None)            
         for possible_mov in possible_movs:  
             Marker_Surface.fill(self.marker_color)
             self.board.screen.blit(Marker_Surface, possible_mov)
