@@ -57,14 +57,19 @@ class Movements:
         all_movs = self._get_all_movs(list_movs, locate, direction)
         possible_moves = all_movs.copy()
 
-        if grouppieces != None:
+        if grouppieces != None:            
+            #Copy Piece_Group
             group = sprite.Group()            
-            group.add(grouppieces)
-            group.remove(piece)
+            for item in grouppieces:                
+                group.add_internal(item.copy())
+                        
+            #Remove dragged piece from Piece_Group
+            group.remove(piece)                       
+            
             for piece in group:
                 if piece.coord in all_movs:
                     possible_moves.remove(piece.coord)
-
+                    print(len(possible_moves))
         return possible_moves
         
     def draw_markers(self, piece, locate):                  
