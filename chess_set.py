@@ -55,10 +55,8 @@ class ChessSet:
                 tile = board[i][j]
                 if tile == current_piece:
                     coord = (self.chess_game.settings.tile_size * j,
-                             self.chess_game.settings.tile_size * i)                    
-                    args = [self.chess_game, image, current_piece, color, coord]
-                    
-                    piece = Piece(args)                                                                                
+                             self.chess_game.settings.tile_size * i)
+                    piece = Piece(self.chess_game, image, current_piece, color, coord)                                                                                
                     self.Pieces_Group.add_internal(piece)
                     piece.blitme()
 
@@ -68,11 +66,7 @@ class Piece:
     def __init__(self, *args):
         """Initialize attributes to represent a ches piece."""
         super().__init__()
-        
-        if len(args) != 5: raise ValueError("Error constructor.\nPlease check entered arguments")
-        
-        self.chess_game, self.image, self.current_piece, self.color, self.coord = args
-        
+        self.chess_game, self.image, self.name, self.color, self.coord = args        
         self.dragging = False
         self.screen = self.chess_game.screen
         self.rect = self.image.get_rect()
