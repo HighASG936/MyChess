@@ -17,9 +17,11 @@ class ChessSet:
         self.Pieces_Group = pygame.sprite.Group()
         self.filename = os.path.join(os.path.dirname(__file__), 'images', 'chess_pieces.bmp')    
         self.Sprites_pieces = Sprites(self.filename)
+        
+        self.colors = ['W', 'B']
+        self.names = ['K', 'Q', 'R', 'B', 'N', 'P']
         self._load_pieces()        
         
-
     def _load_pieces(self):
         """Builds the overall set:
         - Loads images from the sprite sheet.
@@ -35,14 +37,11 @@ class ChessSet:
                                                             x_padding=72, 
                                                             y_margin=68, 
                                                             y_padding=48)
-
-        colors = ['W', 'B']
-        names = ['K', 'Q', 'R', 'B', 'N', 'P']
         i = 0
         j = 0 
         image_piece_index = 0
-        for color in colors:
-            for name in names:
+        for color in self.colors:
+            for name in self.names:
                 image = piece_images[image_piece_index]                                
                 self._create_piece_object(image, color, name)
                 image_piece_index += 1

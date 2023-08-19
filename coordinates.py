@@ -30,7 +30,7 @@ class Coordinates:
     def _get_snap_coordinates(self):
         n = self.settings.board_n
         tile_size = self.settings.tile_size
-        tile_center = tile_size/2
+        tile_center = self.settings.tile_center
         tile_centers = [( (i*tile_size)-tile_center, (j*tile_size)-tile_center )
                         for i in range(1, n+1) 
                         for j in range(1, n+1) 

@@ -12,7 +12,7 @@ class Movements:
         self.surface_size = (self.settings.tile_size, self.settings.tile_size)
         self.marker_color = self.settings.marker_color 
         
-        offset = lambda e: int(e * (self.settings.tile_size))
+        offset = lambda a: int(a * (self.settings.tile_size))
 
         king = [ [offset(i), offset(j)] 
                     for i in range(-1, 2) 
@@ -49,13 +49,12 @@ class Movements:
         
         if locate == None:
             locate = piece.coord
+        
         name = piece.name[1]
         direction = piece.direction
-        list_movs = self.movs[name]
-        print("to movs", piece.x, piece.y)
+        list_movs = self.movs[name]        
         return self._get_all_movs(list_movs, locate, direction)
-    
-    
+        
     def draw_markers(self, piece, locate):                  
         Marker_Surface = Surface(self.surface_size, SRCALPHA)         
         possible_movs = self._get_possible_movs(piece, locate)            
