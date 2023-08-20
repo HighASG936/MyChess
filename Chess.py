@@ -33,7 +33,7 @@ class ChessGame:
                 piece.dragging = not piece.dragging
                 if piece.dragging:                                         
                     self.last_x, self.last_y = piece.rect.topleft                                        
-                    piece.possible_movs = self.movements._get_possible_movs(piece, grouppieces=self.Pieces_group)
+                    piece.possible_movs = self.movements._get_possible_moves(piece, grouppieces=self.Pieces_group)
                     break
                 else:
                     piece.x, piece.y = piece.rect.topleft
