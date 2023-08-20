@@ -65,7 +65,7 @@ class ChessGame:
         
         for piece in self.chess_set.Pieces_Group:  
             if piece.dragging:        
-                self.board.movs.draw_markers(piece, [self.last_x, self.last_y] ) 
+                self.board.movs.draw_markers(piece, [self.last_x, self.last_y], self.Pieces_group ) 
                 piece.rect.topleft = self._snap_piece(piece)                
                 break
         self.chess_set.Pieces_Group.draw(self.screen)

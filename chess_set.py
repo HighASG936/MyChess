@@ -85,9 +85,5 @@ class Piece:
         self.rect = self.image.get_rect()
         self.rect.topleft = self.coord  #Coordenates of piece        
         self.screen.blit(self.image, self.rect)
-
-    def copy(self):
-        new_piece = Piece(self.chess_game, self.image, self.name, self.color, self.coord)
-        return new_piece   
          
     

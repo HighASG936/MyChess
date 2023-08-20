@@ -11,8 +11,7 @@ class Movements:
         self.markers = sprite.Group()
         self.board = chessboard
         self.surface_size = (self.settings.tile_size, self.settings.tile_size)
-        self.marker_color = self.settings.marker_color 
-        
+        self.marker_color = self.settings.marker_color         
         offset = lambda a: int(a * (self.settings.tile_size))
 
         king = [ [offset(i), offset(j)] 
@@ -27,8 +26,8 @@ class Movements:
 
         queen = rook + bishop
 
-        pawn = [[0, offset(j)] for j in range(3)] + \
-               [[offset(i), offset(1)] for i in [-1, 1]]
+        pawn = [[0, offset(j)] for j in range(3)] # + \
+               # [[offset(i), offset(1)] for i in [-1, 1]]
 
         knight = [[0, 0]] + \
                  [[k*offset(1), l*offset(2)] for k in [-1, 1] for l in [-1, 1] ] + \
@@ -43,7 +42,7 @@ class Movements:
         list_moves = a + (direction*b)
         possible_moves = [tuple(coord) 
                           for coord in list_moves 
-                          if all(x <= self.settings.board_size for x in coord)]                
+                          if all(x < self.settings.board_size for x in coord)]                
         return possible_moves
     
     def _get_possible_movs(self, piece, locate=None, grouppieces=None):                
@@ -58,23 +57,15 @@ class Movements:
         possible_moves = all_movs.copy()
 
         if grouppieces != None:            
-            #Copy Piece_Group
-            group = sprite.Group()            
+            #Copy Piece_Group        
             for item in grouppieces:                
-                group.add_internal(item.copy())
-                        
-            #Remove dragged piece from Piece_Group
-            group.remove(piece)                       
-            
-            for piece in group:
-                if piece.coord in all_movs:
-                    possible_moves.remove(piece.coord)
-                    print(len(possible_moves))
+                if item.coord in possible_moves and piece.coord != item.coord:
+                    possible_moves.remove(item.coord)
         return possible_moves
         
-    def draw_markers(self, piece, locate):                  
+    def draw_markers(self, piece, locate, grouppieces=None):                  
         Marker_Surface = Surface(self.surface_size, SRCALPHA)         
-        possible_movs = self._get_possible_movs(piece, locate, None)            
+        possible_movs = self._get_possible_movs(piece, locate, grouppieces)            
         for possible_mov in possible_movs:  
             Marker_Surface.fill(self.marker_color)
             self.board.screen.blit(Marker_Surface, possible_mov)
