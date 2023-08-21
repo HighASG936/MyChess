@@ -45,6 +45,7 @@ class ChessGame:
                 exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
+                    
                     exit()                        
             elif event.type == pygame.MOUSEBUTTONDOWN:                   
                 self._dragging_piece(event)
