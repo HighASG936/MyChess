@@ -50,7 +50,8 @@ class Movements:
 
     def _get_cuadrant(self, move1, move2, moves):
         if move1 == move2:
-            x, y = move2
+            x, y = move2            
+
             index_piece_in_moves_list = moves.index(move1)
             index_other_piece_in_moves_list = moves.index(move2)
             if x>0 and y>0:                
