@@ -2,6 +2,7 @@
 from settings import Settings
 import numpy as np
 from pygame import sprite, Surface, SRCALPHA
+from prunner import Prunner
 
 class Movements:
 
@@ -9,6 +10,7 @@ class Movements:
         super().__init__()
         self.settings = Settings()
         self.markers = sprite.Group()
+        self.prunner = Prunner()
         self.board = chessboard
         self.surface_size = (self.settings.tile_size, self.settings.tile_size)
         self.marker_color = self.settings.marker_color
@@ -40,61 +42,15 @@ class Movements:
                           if all(x < self.settings.board_size for x in coord)]
         return possible_moves
 
-    def _pawn_movements(self, name, moves, other_piece):
-        # moves.remove(other_piece.coord)
-        if name == 'P':
-        #    for move in moves:
-        #        print(dir(move))
-        #        pass
-            pass
-
-    def _get_cuadrant(self, move1, move2, moves):
-        if move1 == move2:
-            x, y = move2            
-
-            index_piece_in_moves_list = moves.index(move1)
-            index_other_piece_in_moves_list = moves.index(move2)
-            if x>0 and y>0:                
-                return moves[index_piece_in_moves_list:index_other_piece_in_moves_list]
-            # elif x<0 and y>0:
-            #    return 2
-            #elif x<0 and y<0:
-            #    return 3
-            #elif x>0 and x<0:
-            #    return 4
-        else:
-            return None
-
-    def _bishop_movements(self, piece, all_moves, other_move):
-        name = piece.name[1]
-        prunned_moves = []
-        if name == 'B':
-            for move in all_moves:
-                prunned_moves.append(self._get_cuadrant(move, other_move, all_moves))
-        return prunned_moves
-
-    def _prunning_possible_moves(self, piece, all_moves, grouppieces):
-        all_moves = all_moves.copy()
-        prunned_moves = []
-        for other_piece in grouppieces:
-            other_move = other_piece.coord
-            prunned_moves.append(self._bishop_movements(piece, all_moves, other_move))
-            # if other_piece.coord in prunned_moves and piece.coord != other_piece.coord:
-                # prunned_moves.remove(other_piece.coord)
-            # self._pawn_movements(piece, prunned_moves, other_piece)        
-        return prunned_moves
-
     def _get_possible_moves(self, piece, locate=None, grouppieces=None):
         name = piece.name[1]
         direction = piece.direction
         list_moves = self.moves[name]
-
-        if locate == None:
-            locate = piece.coord
+        if locate == None: locate = piece.coord
 
         all_moves = self._get_all_moves(list_moves, locate, direction)
-        possible_moves = self._prunning_possible_moves(piece, all_moves, grouppieces)
-        return possible_moves
+        #possible_moves = self.prunner.get_prunning_moves(all_moves, locate, )
+        return all_moves
 
     def draw_markers(self, piece, locate, grouppieces=None):
         Marker_Surface = Surface(self.surface_size, SRCALPHA)

@@ -13,19 +13,25 @@ class ChessGame:
 
     def __init__(self):
         """Initialize the game, and create resources."""
+        
         self.coords = Coordinates()
         self.locations = self.coords.get_board()
-        self.tiles_centers = self.coords.tiles_centers        
-        pygame.init()
-        self.settings = Settings()
+        self.tiles_centers = self.coords.tiles_centers                                
+
         self.board = Board(self)
-        self.screen = pygame.display.set_mode((self.settings.board_size, self.settings.board_size))
-        self.last_x, self.last_y = 0, 0
-        pygame.display.set_caption("Chess")
-        self.chess_set = ChessSet(self)
-        self.distance = lambda x1, x2, y1, y2 : sqrt( (x1 - x2)**2  +  (y1 - y2)**2)
         self.movements = self.board.movs
+
+        self.chess_set = ChessSet(self)
         self.Pieces_group = self.chess_set.Pieces_Group
+
+        pygame.init()
+        pygame.display.set_caption("Chess")        
+        self.settings = Settings()
+        self.screen = pygame.display.set_mode((self.settings.board_size, self.settings.board_size))
+
+        self.last_x, self.last_y = 0, 0
+        self.distance = lambda x1, x2, y1, y2 : sqrt( (x1 - x2)**2  +  (y1 - y2)**2)
+
 
     def _dragging_piece(self, event):
         for piece in self.Pieces_group:                                
