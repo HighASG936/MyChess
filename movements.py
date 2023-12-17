@@ -42,21 +42,39 @@ class Movements:
                           if all(x < self.settings.board_size for x in coord)]
         return possible_moves
 
-    def _get_possible_moves(self, piece, locate=None, grouppieces=None):
-        name = piece.name[1]
-        direction = piece.direction
-        list_moves = self.moves[name]
-        if locate == None: locate = piece.coord
+    def _get_possible_moves(self, dragged_piece, locate=None, grouppieces=None):
+        if grouppieces == None:
+             raise Exception("grouppieces None")
+        
+        name = dragged_piece.name[1]
+        direction = dragged_piece.direction
+        list_moves = self.moves[name]    
+        other_locates = []
+        posible_moves = []
 
-        all_moves = self._get_all_moves(list_moves, locate, direction)
-        #possible_moves = self.prunner.get_prunning_moves(all_moves, locate, )
-        return all_moves
+        if locate == None: locate = dragged_piece.coord
+        
+        # Get location of other pieces (x, y)
+        for other_piece in grouppieces:
+            other_piece_locate = other_piece.coord
+            if other_piece_locate != locate:
+                other_locates.append(other_piece.coord)                
 
-    def draw_markers(self, piece, locate, grouppieces=None):
+        # Get all posible moves  for dragged piece
+        all_moves = self._get_all_moves(list_moves, locate, direction) 
+        
+        for other_locate in other_locates:
+            prunned_moves = self.prunner.get_prunned_moves(all_moves, other_locate, locate)
+            for prunned_move in prunned_moves:
+                posible_moves.append(prunned_move)            
+        return posible_moves        
+
+
+    def draw_markers(self, piece, locate, grouppieces):
         Marker_Surface = Surface(self.surface_size, SRCALPHA)
         possible_moves = self._get_possible_moves(piece, locate, grouppieces)
-        for possible_mov in possible_moves:
+        for possible_move in possible_moves:
             Marker_Surface.fill(self.marker_color)
-            self.board.screen.blit(Marker_Surface, possible_mov)
+            self.board.screen.blit(Marker_Surface, possible_move)
 
 
